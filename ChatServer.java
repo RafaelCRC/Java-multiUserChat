@@ -68,6 +68,19 @@ class MyThreadServer extends Thread {
                                 i = msg.indexOf("@");
                                 toClientName = msg.substring(i);
 
+                                if (msg.charAt(i-1) == '$') { //envio de arquivos binarios
+                                    os = new DataOutputStream(clientList.get(toClientName).getOutputStream());
+
+                                    FileInputStream fin = new FileInputStream ("test.txt");
+                                    DataInputStream in = new DataInputStream (fin);
+
+                                    byte buffer[] = new byte[512];            
+
+                                    while (in.read(buffer) != -1) {
+                                        os.write(buffer,0,buffer.length);
+                                    }
+                                }
+
                                 if (toClientName.equals("@all")) {
 
                                     for (Map.Entry<String, Socket> client : clientList.entrySet()) {
